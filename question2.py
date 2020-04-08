@@ -20,6 +20,7 @@ y_k = LpVariable("y_k",0,None,LpInteger)
 
 p_jk = LpVariable("p_jk",0,None,LpInteger)
 q_jk = LpVariable("q_jk",0,None,LpInteger)
+
 yp_jk = LpVariable("yp_jk",0,None,LpInteger)
 yq_jk = LpVariable("yq_jk",0,None,LpInteger)
 
