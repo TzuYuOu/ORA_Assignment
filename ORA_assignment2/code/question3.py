@@ -1,19 +1,21 @@
 from pulp import *
 import math
-
+import time
 # constant
 # p_i = [16,16,16,16,9,9,9,9,9,18,18,18]
 p_i = [33,30,25,18,18]
 # q_i = [8,8,8,8,9,9,9,9,9,3,3,3]
 q_i = [10,11,15,14,10]
-X_LOWER_BOUND = 10
-Y_LOWER_BOUND = 10
+# X_LOWER_BOUND = 3
+# Y_LOWER_BOUND = 3
 # X_UPPER_BOUND = 163
 # Y_UPPER_BOUND = 163
+X_LOWER_BOUND = 10
+Y_LOWER_BOUND = 10
 X_UPPER_BOUND = 124
 Y_UPPER_BOUND = 124
 
-m = 10
+m = 10 
 A = [0]*(m+1)
 A[1] = X_LOWER_BOUND
 A[-1] = X_UPPER_BOUND
@@ -115,15 +117,19 @@ for j in range(2,m+1):
 # constraint iii
 for j in range(2,m+1):
     prob += A[m]*(yuj["yu_{}".format(j)]-1) + y <= ywj["yw_{}".format(j)]
-    prob += ywj["yw_{}".format(j)] <= A[m]*(1-yuj["yu_{}".format(j)]) + x
+    prob += ywj["yw_{}".format(j)] <= A[m]*(1-yuj["yu_{}".format(j)]) + y
 # constraint iv
 for j in range(2,m+1):
     yuj["yu_{}".format(j)] >= yuj["yu_{}".format(j-1)]
 
+start_time = time.time()
 prob.writeLP("MinimizeRectangleArea.lp")
 prob.solve()
+end_time = time.time()
+
 print("Status:", LpStatus[prob.status])
 print("Objective function value = ", value(prob.objective))
 print("x: {}".format(x.varValue))
 print("y: {}".format(y.varValue))
 print("Rectangle Area: {}".format(x.varValue*y.varValue))
+print("Elapsed time: {}s".format(end_time-start_time))
